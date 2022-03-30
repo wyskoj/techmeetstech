@@ -1,7 +1,5 @@
 rules_version = '2';
 
-
-
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -13,6 +11,13 @@ service cloud.firestore {
       allow read: if loggedIn();
       allow update, create, delete: if
         loggedIn() && request.auth.uid == uid;
+    }
+
+    match /interests/{uid} {
+      allow read: if loggedIn();
+      allow write: if loggedIn()
+        && uid == request.auth.uid
+        && resource.data.interests.size() < 100;
     }
   }
 }

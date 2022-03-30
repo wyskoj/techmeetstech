@@ -327,7 +327,7 @@ export default function EditProfile() {
 							Cancel
 						</Button>
 						<Button variant="contained" endIcon={<Save/>} onClick={() => {
-							updateProfile({bio, year, major, interests: profile!.interests});
+							updateProfile({bio, year, major});
 							context.showSnackbar  = true;
 							Router.push({
 								pathname: `/profile/${getTechUsername(user!)}`,
