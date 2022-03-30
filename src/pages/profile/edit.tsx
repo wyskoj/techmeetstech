@@ -285,7 +285,10 @@ export default function EditProfile() {
 				marginTop: "2em"
 			}}>
 				<Stack spacing={2} sx={{width: 500, margin: "auto"}}>
-					<Typography variant={"h4"}>Edit your profile</Typography>
+					<Box>
+						<Typography variant={"h4"}>Edit your profile</Typography>
+						<Typography variant={"body2"} color={"darkgrey"}>Please be responsible with your profile details.</Typography>
+					</Box>
 					<Autocomplete
 						value={major}
 						options={majors}
@@ -324,8 +327,7 @@ export default function EditProfile() {
 							Cancel
 						</Button>
 						<Button variant="contained" endIcon={<Save/>} onClick={() => {
-							let profile1 = {bio, year, major};
-							updateProfile(profile1);
+							updateProfile({bio, year, major, interests: profile!.interests});
 							context.showSnackbar  = true;
 							Router.push({
 								pathname: `/profile/${getTechUsername(user!)}`,

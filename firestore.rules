@@ -1,31 +1,18 @@
 rules_version = '2';
 
-function validAccount(request){
-  return request.auth != null && request.auth.token.email.split('@')[1] == 'mtu.edu';
-}
+
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
-    }
 
-    match /users/{uid}/interests/{interest} {
-      allow read, delete: if
-        validAccount(request);
-      allow update, create: if
-        validAccount(request)
-        && request.resource.data.keys().hasAll(['interest'])
-        && interest is string
-        && interest.size() >= 1
-        && interest.size() <= 256;
+    function loggedIn(){
+      return request.auth != null && request.auth.token.email.split('@')[1] == 'mtu.edu';
     }
 
     match /users/{uid} {
-      allow read, delete: if
-        validAccount(request);
-      allow update, create: if
-        validAccount(request);
+      allow read: if loggedIn();
+      allow update, create, delete: if
+        loggedIn() && request.auth.uid == uid;
     }
   }
 }

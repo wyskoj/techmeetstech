@@ -5,5 +5,5 @@ export interface Interest {
     /**
      * The user's interest.
      */
-    interest: String
+    interest: string
 }
