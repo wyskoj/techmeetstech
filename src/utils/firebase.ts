@@ -14,12 +14,12 @@ export function initializeFirebase() {
     if (getApps().length === 0) {
         initializeApp(FIREBASE_OPTIONS);
 
-        if (isDev()) {
-            connectAuthEmulator(getAuth(), 'http://localhost:9099', {
-                disableWarnings: true,
-            });
-            connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
-        }
+        // if (isDev()) {
+        //     connectAuthEmulator(getAuth(), 'http://localhost:9099', {
+        //         disableWarnings: true,
+        //     });
+        //     connectFirestoreEmulator(getFirestore(), 'localhost', 8080);
+        // }
 
         if (isBrowser() && isProd()) {
             try {

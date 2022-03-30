@@ -19,7 +19,13 @@ service cloud.firestore {
         && interest is string
         && interest.size() >= 1
         && interest.size() <= 256;
+    }
 
+    match /users/{uid} {
+      allow read, delete: if
+        validAccount(request);
+      allow update, create: if
+        validAccount(request);
     }
   }
 }

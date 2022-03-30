@@ -6,12 +6,13 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import {Container, createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 import {grey, yellow} from "@mui/material/colors";
+import AppContext from "../context/AppContext";
 
 const theme = createTheme({
     spacing: 8,
     palette: {
         primary: {
-            main: yellow[300],
+            main: yellow[600],
         },
         secondary: {
             main: grey[500]
@@ -19,16 +20,22 @@ const theme = createTheme({
     }
 });
 
+let contextValue = {
+    showSnackbar: false
+}
+
 function MyApp({Component, pageProps}) {
 
     initializeFirebase();
 
-    return <ThemeProvider theme={theme}>
-        <Container component={"main"}>
-            <CssBaseline/>
-            <Component {...pageProps} />
-        </Container>
-    </ThemeProvider>
+    return <AppContext.Provider value={contextValue}>
+        <ThemeProvider theme={theme}>
+            <Container component={"main"}>
+                <CssBaseline/>
+                <Component {...pageProps} />
+            </Container>
+        </ThemeProvider>
+    </AppContext.Provider>
 }
 
 export default MyApp

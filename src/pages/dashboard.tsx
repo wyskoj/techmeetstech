@@ -1,16 +1,11 @@
-import {useAuthenticatedRoute} from "../utils/hooks/firebase";
-import {Button} from "@mui/material";
-import {getAuth, signOut} from "firebase/auth";
+import { useAuthenticatedRoute, useDefaultAuthState } from "../utils/hooks/firebase";
 import Navigation from "../components/navigation";
 
 export default function Dashboard() {
-    useAuthenticatedRoute();
+	useAuthenticatedRoute();
+	const {user} = useDefaultAuthState();
 
-    return <>
-        <Navigation title={"Dashboard"} />
-        <Button variant={"contained"} onClick={() => {
-            signOut(getAuth());
-        }}>Sign out</Button>
-
-    </>
+	return <>
+		<Navigation name={user?.displayName ?? ""}/>
+	</>
 }
