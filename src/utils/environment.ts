@@ -1,5 +1,3 @@
-import { FirebaseOptions } from 'firebase/app';
-
 export const FIREBASE_OPTIONS = {
     apiKey: "AIzaSyD6lKUKanLHTwYiwYtz6pnaEUxw8wWSFhs",
     authDomain: "techmeetstech-c6e6d.firebaseapp.com",

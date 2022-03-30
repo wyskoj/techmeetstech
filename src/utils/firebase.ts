@@ -1,8 +1,6 @@
-import { FIREBASE_OPTIONS, isBrowser, isDev, isProd } from './environment';
+import { FIREBASE_OPTIONS, isBrowser, isProd } from './environment';
 import { getApps, initializeApp } from 'firebase/app';
-import { connectAuthEmulator, getAuth } from 'firebase/auth';
 import {
-    connectFirestoreEmulator,
     enableMultiTabIndexedDbPersistence,
     getFirestore,
 } from 'firebase/firestore';
