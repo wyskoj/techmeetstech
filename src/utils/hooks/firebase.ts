@@ -1,11 +1,16 @@
 import { getAuth, User } from 'firebase/auth';
-import { CollectionReference, DocumentReference } from 'firebase/firestore';
+import {
+	CollectionReference,
+	DocumentReference,
+	DocumentSnapshot,
+	QuerySnapshot,
+} from 'firebase/firestore';
 import router from 'next/router';
 import { useEffect } from 'react';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import {
-    useCollectionData,
-    useDocumentData,
+	useCollectionData,
+	useDocumentData,
 } from 'react-firebase-hooks/firestore';
 
 /**
@@ -13,13 +18,13 @@ import {
  * @returns The hook.
  */
 export function useAuthenticatedRoute() {
-    const { user, loading } = useDefaultAuthState();
+	const { user, loading } = useDefaultAuthState();
 
-    return useEffect(() => {
-        if (!user && !loading) {
-            router.push('/login?next=prev');
-        }
-    }, [user, loading]);
+	return useEffect(() => {
+		if (!user && !loading) {
+			router.push('/login?next=prev');
+		}
+	}, [user, loading]);
 }
 
 /**
@@ -27,9 +32,9 @@ export function useAuthenticatedRoute() {
  * @returns The hook.
  */
 export function useDefaultAuthState() {
-    const [user, loading, error] = useAuthState(getAuth());
+	const [user, loading, error] = useAuthState(getAuth());
 
-    return { user: user ?? null, loading, error };
+	return { user: user ?? null, loading, error };
 }
 
 /**
@@ -39,16 +44,16 @@ export function useDefaultAuthState() {
  * @returns The hook.
  */
 export function useAuthenticatedCollectionData<T>(
-    callback: (user: User) => CollectionReference
+	callback: (user: User) => CollectionReference
 ) {
-    const { user } = useDefaultAuthState();
+	const { user } = useDefaultAuthState();
 
-    // @ts-ignore
-    return useCollectionData(user && callback(user)) as [
-            T[] | undefined,
-        boolean,
-            Error | undefined
-    ];
+	return useCollectionData(user && callback(user)) as [
+		T[] | undefined,
+		boolean,
+		Error | undefined,
+		QuerySnapshot<T>
+	];
 }
 
 /**
@@ -57,14 +62,14 @@ export function useAuthenticatedCollectionData<T>(
  * @returns The hook.
  */
 export function useAuthenticatedDocumentData<T>(
-    callback: (user: User) => DocumentReference
+	callback: (user: User) => DocumentReference
 ) {
-    const { user } = useDefaultAuthState();
+	const { user } = useDefaultAuthState();
 
-    // @ts-ignore
-    return useDocumentData(user && callback(user)) as [
-            T | undefined,
-        boolean,
-            Error | undefined
-    ];
+	return useDocumentData(user && callback(user)) as [
+		T | undefined,
+		boolean,
+		Error | undefined,
+		DocumentSnapshot<T> | undefined
+	];
 }

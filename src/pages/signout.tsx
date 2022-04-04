@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Typography } from '@mui/material';
 import Link from 'next/link';
 import { useEffect } from 'react';
 import Router from 'next/router';
@@ -14,17 +14,23 @@ export default function SignOut() {
 			await Router.push('/');
 		})();
 	}, []);
-	return <>
-		<Box sx={{
-			height: "100vh",
-			display: "flex",
-			alignItems: "center",
-			justifyContent: "center",
-			flexDirection: "column"
-		}}>
-			<Typography variant={"body1"}>Signing out...</Typography>
-			{/* eslint-disable-next-line */}
-			<Typography variant={"body2"}>If you aren't redirected, you can go to the <Link href={"/"}>homepage</Link>.</Typography>
-		</Box>
-	</>
+	return (
+		<>
+			<Box
+				sx={{
+					height: '100vh',
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					flexDirection: 'column',
+				}}
+			>
+				<Typography variant={'body1'}>Signing out...</Typography>
+				<Typography variant={'body2'}>
+					If you aren&apos;t redirected, you can go to the&#32;
+					<Link href={'/'}>homepage</Link>.
+				</Typography>
+			</Box>
+		</>
+	);
 }

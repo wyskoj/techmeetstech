@@ -14,10 +14,18 @@ service cloud.firestore {
     }
 
     match /interests/{uid} {
+
+      function capacityRemaining() {
+        return (resource.data.interests != null) || (resource.data.interests != null && resource.data.interests.size() < 100);
+      }
+
       allow read: if loggedIn();
-      allow write: if loggedIn()
+      allow update: if loggedIn()
         && uid == request.auth.uid
-        && resource.data.interests.size() < 100;
+        && capacityRemaining();
+      allow create: if loggedIn()
+        && uid == request.auth.uid;
     }
   }
 }
+
