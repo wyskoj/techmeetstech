@@ -196,7 +196,7 @@ export default function Profile() {
 						severity="success"
 						sx={{ width: '100%' }}
 					>
-						Profile successfully edited!
+						Your changes were saved.
 					</MuiAlert>
 				</Snackbar>
 				<Container sx={{ margin: '1em 0' }}>
