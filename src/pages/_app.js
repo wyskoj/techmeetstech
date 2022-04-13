@@ -12,6 +12,22 @@ import {
 } from '@mui/material';
 import { grey, yellow } from '@mui/material/colors';
 import AppContext from '../context/AppContext';
+import NProgress from 'nprogress';
+import 'nprogress/nprogress.css';
+import Router from 'next/router';
+
+/* Configure NProgress */
+NProgress.configure({
+	minimum: 0.3,
+	easing: 'ease',
+	speed: 200,
+	showSpinner: true,
+	trickleSpeed: 1000,
+});
+
+Router.events.on('routeChangeStart', () => NProgress.start());
+Router.events.on('routeChangeComplete', () => NProgress.done());
+Router.events.on('routeChangeError', () => NProgress.done());
 
 const theme = createTheme({
 	spacing: 8,
