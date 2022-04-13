@@ -1,9 +1,17 @@
-import { Alert, Box, Button, Snackbar, Typography } from '@mui/material';
-import { Google } from '@mui/icons-material';
+import {
+	Alert,
+	Box,
+	Button,
+	CircularProgress,
+	Snackbar,
+	Stack,
+	Typography
+} from '@mui/material';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useDefaultAuthState } from '../utils/hooks/firebase';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
+import Husky from '/public/images/husky.svg';
 
 export default function Login() {
 	const { user, loading } = useDefaultAuthState();
@@ -22,37 +30,34 @@ export default function Login() {
 	const [errorOpen, setErrorOpen] = React.useState(false);
 
 	function handleClose() {
+		// Closing of snackbar
 		setErrorOpen(false);
 	}
 
 	return (
 		<>
-			<Box
+			<Stack
+				spacing={2}
 				sx={{
-					display: 'flex',
-					alignItems: 'center',
-					flexDirection: 'column',
+					maxWidth: 400,
+					margin: 'auto',
+					textAlign: 'center',
+					marginTop: '1em'
 				}}
 			>
 				<Typography
 					component={'h1'}
 					variant={'h5'}
-					sx={{
-						margin: '0.5em',
-					}}
 				>
 					Log in
 				</Typography>
-				<Typography
-					variant={'body1'}
-					sx={{
-						margin: '0.5em',
-					}}
-				>
+				<Typography variant={'body1'}>
 					Sign in with your Michigan Tech email to get started.
 				</Typography>
 				{user || loading ? (
-					<p>Loading...</p>
+					<Box>
+						<CircularProgress />
+					</Box>
 				) : (
 					<>
 						<Button
@@ -61,25 +66,27 @@ export default function Login() {
 								try {
 									const provider = new GoogleAuthProvider();
 									provider.setCustomParameters({
-										hd: 'mtu.edu',
+										hd: 'mtu.edu'
 									});
 									await signInWithPopup(getAuth(), provider);
 								} catch (e) {
+									console.error(e);
 									setErrorOpen(true);
 								}
 							}}
 							sx={{
 								margin: '0.5em',
-								padding: '0.75em 3em',
+								padding: '0.75em 3em'
 							}}
 						>
-							<Google />
+							<Husky height={50} />
 							<Typography
 								sx={{
-									marginLeft: '0.75em',
+									marginLeft: '1em',
+									fontWeight: 'bold'
 								}}
 							>
-								Sign in with Google
+								Sign in
 							</Typography>
 						</Button>
 						<Snackbar
@@ -89,7 +96,7 @@ export default function Login() {
 						>
 							<Alert
 								onClose={handleClose}
-								severity="error"
+								severity='error'
 								sx={{ width: '100%' }}
 							>
 								Sign in with Google failed.
@@ -97,7 +104,7 @@ export default function Login() {
 						</Snackbar>
 					</>
 				)}
-			</Box>
+			</Stack>
 		</>
 	);
 }
