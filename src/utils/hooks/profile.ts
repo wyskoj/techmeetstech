@@ -1,17 +1,14 @@
-import { useAuthenticatedDocumentData, useDefaultAuthState } from './firebase';
+import { useAuthenticatedDocumentData } from './firebase';
 import { Profile } from '../../types/profile';
 import { doc, getFirestore, setDoc } from 'firebase/firestore';
 
-export function useProfile() {
-	const { user } = useDefaultAuthState();
-	const [profile, loading] = useAuthenticatedDocumentData<Profile>((user) =>
-		doc(getFirestore(), 'users', user.uid)
+export function useProfile(uid: string) {
+	const [profile, loading] = useAuthenticatedDocumentData<Profile>(() =>
+		doc(getFirestore(), 'users', uid)
 	);
 
 	function updateProfile(profile: Profile) {
-		if (user) {
-			setDoc(doc(getFirestore(), `/users/${user.uid}`), profile);
-		}
+		setDoc(doc(getFirestore(), `/users/${uid}`), profile);
 	}
 
 	return { profile, loading, updateProfile };

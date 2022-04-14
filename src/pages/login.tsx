@@ -5,13 +5,34 @@ import {
 	CircularProgress,
 	Snackbar,
 	Stack,
-	Typography
+	Typography,
 } from '@mui/material';
 import { getAuth, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useDefaultAuthState } from '../utils/hooks/firebase';
 import Router from 'next/router';
 import React, { useEffect } from 'react';
 import Husky from '/public/images/husky.svg';
+import { doc, getFirestore, setDoc } from 'firebase/firestore';
+
+async function handleOnClick(
+	setErrorOpen: (value: ((prevState: boolean) => boolean) | boolean) => void
+) {
+	try {
+		const provider = new GoogleAuthProvider();
+		provider.setCustomParameters({
+			hd: 'mtu.edu',
+		});
+		const userCredential = await signInWithPopup(getAuth(), provider);
+		await setDoc(doc(getFirestore(), `/accounts/${userCredential.user.uid}`), {
+			displayName: userCredential.user.displayName,
+			email: userCredential.user.email,
+			photoURL: userCredential.user.photoURL,
+		});
+	} catch (e) {
+		console.error(e);
+		setErrorOpen(true);
+	}
+}
 
 export default function Login() {
 	const { user, loading } = useDefaultAuthState();
@@ -42,7 +63,7 @@ export default function Login() {
 					maxWidth: 400,
 					margin: 'auto',
 					textAlign: 'center',
-					marginTop: '1em'
+					marginTop: '1em',
 				}}
 			>
 				<Typography
@@ -63,27 +84,18 @@ export default function Login() {
 						<Button
 							variant={'contained'}
 							onClick={async () => {
-								try {
-									const provider = new GoogleAuthProvider();
-									provider.setCustomParameters({
-										hd: 'mtu.edu'
-									});
-									await signInWithPopup(getAuth(), provider);
-								} catch (e) {
-									console.error(e);
-									setErrorOpen(true);
-								}
+								await handleOnClick(setErrorOpen);
 							}}
 							sx={{
 								margin: '0.5em',
-								padding: '0.75em 3em'
+								padding: '0.75em 3em',
 							}}
 						>
 							<Husky height={50} />
 							<Typography
 								sx={{
 									marginLeft: '1em',
-									fontWeight: 'bold'
+									fontWeight: 'bold',
 								}}
 							>
 								Sign in
@@ -96,7 +108,7 @@ export default function Login() {
 						>
 							<Alert
 								onClose={handleClose}
-								severity='error'
+								severity="error"
 								sx={{ width: '100%' }}
 							>
 								Sign in with Google failed.

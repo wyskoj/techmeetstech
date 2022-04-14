@@ -14,14 +14,17 @@ import {
 	Typography,
 } from '@mui/material';
 import React, { useState } from 'react';
-import { useAuthenticatedRoute } from '../../utils/hooks/firebase';
+import {
+	useAuthenticatedRoute,
+	useDefaultAuthState,
+} from '../../utils/hooks/firebase';
 import { Add } from '@mui/icons-material';
 import { useInterests } from '../../utils/hooks/interest';
 
 export default function Interests() {
 	useAuthenticatedRoute();
-
-	const { interests, loading, updateInterests } = useInterests();
+	const { user } = useDefaultAuthState();
+	const { interests, loading, updateInterests } = useInterests(user?.uid ?? '');
 
 	/* Deleting a chip (an interest) */
 	function handleDeleteChip(e: string) {
@@ -198,7 +201,7 @@ export default function Interests() {
 								value={field}
 								onChange={(e) => setField(e.target.value)}
 								sx={{ flexGrow: 1, marginRight: '1em' }}
-								onKeyPress={(event) => {
+								onKeyDown={(event) => {
 									if (event.code == 'Enter') {
 										handleAdd();
 									}

@@ -1,5 +1,4 @@
 import { Box, Typography } from '@mui/material';
-import Link from 'next/link';
 import { useEffect } from 'react';
 import Router from 'next/router';
 import { sleep } from '../utils/time';
@@ -26,10 +25,6 @@ export default function SignOut() {
 				}}
 			>
 				<Typography variant={'body1'}>Signing out...</Typography>
-				<Typography variant={'body2'}>
-					If you aren&apos;t redirected, you can go to the&#32;
-					<Link href={'/'}>homepage</Link>.
-				</Typography>
 			</Box>
 		</>
 	);

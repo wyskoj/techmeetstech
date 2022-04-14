@@ -19,7 +19,6 @@ import {
 	useAuthenticatedRoute,
 	useDefaultAuthState,
 } from '../utils/hooks/firebase';
-import { getTechUsername } from '../utils/michigantech';
 
 function NavbarButton(props: { text: string; url: string }) {
 	return (
@@ -82,7 +81,7 @@ export default function Navigation() {
 						<MenuItem
 							onClick={() => {
 								setProfileMenuOpen(false);
-								Router.push(`/profile/${getTechUsername(user)}`);
+								Router.push(`/profile/${user?.uid}`);
 							}}
 						>
 							My profile

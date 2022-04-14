@@ -247,7 +247,11 @@ export default function EditProfile() {
 	useAuthenticatedRoute();
 	const context = useContext(AppContext);
 	const { user, loading: userLoading } = useDefaultAuthState();
-	const { profile, loading: profileLoading, updateProfile } = useProfile();
+	const {
+		profile,
+		loading: profileLoading,
+		updateProfile,
+	} = useProfile(user?.uid ?? '');
 
 	/* States */
 	const [year, setYear] = useState(1);
@@ -297,9 +301,7 @@ export default function EditProfile() {
 									color={'secondary'}
 									variant="outlined"
 									startIcon={<Cancel />}
-									onClick={() =>
-										Router.push(`/profile/${getTechUsername(user as User)}`)
-									}
+									onClick={() => Router.push(`/profile/${user?.uid ?? ''}`)}
 								>
 									Cancel
 								</Button>
@@ -402,7 +404,7 @@ export default function EditProfile() {
 									updateProfile({ bio, year, major });
 									context.showSnackbar = true;
 									Router.push({
-										pathname: `/profile/${getTechUsername(user)}`,
+										pathname: `/profile/${user?.uid ?? ''}`,
 									});
 								}}
 							>
