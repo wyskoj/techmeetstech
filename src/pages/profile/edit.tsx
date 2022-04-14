@@ -19,8 +19,6 @@ import { ordinal } from '../../utils/number';
 import { Cancel, Save } from '@mui/icons-material';
 import { useProfile } from '../../utils/hooks/profile';
 import Router from 'next/router';
-import { getTechUsername } from '../../utils/michigantech';
-import { User } from 'firebase/auth';
 import AppContext from '../../context/AppContext';
 import useTimeout from '../../utils/hooks/timeout';
 
@@ -391,9 +389,7 @@ export default function EditProfile() {
 								color={'secondary'}
 								variant="outlined"
 								startIcon={<Cancel />}
-								onClick={() =>
-									Router.push(`/profile/${getTechUsername(user as User)}`)
-								}
+								onClick={() => Router.push(`/profile/${user?.uid ?? ''}`)}
 							>
 								Cancel
 							</Button>
