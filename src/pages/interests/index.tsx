@@ -19,19 +19,19 @@ import {
 	useDefaultAuthState,
 } from '../../utils/hooks/firebase';
 import { Add } from '@mui/icons-material';
-import { useInterests } from '../../utils/hooks/interest';
+import { useProfile } from '../../utils/hooks/profile';
 
 export default function Interests() {
 	useAuthenticatedRoute();
 	const { user } = useDefaultAuthState();
-	const { interests, loading, updateInterests } = useInterests(user?.uid ?? '');
+	const { profile, loading, updateProfile } = useProfile(user?.uid ?? '');
 
 	/* Deleting a chip (an interest) */
 	function handleDeleteChip(e: string) {
-		if (interests) {
-			const indexToRemove = interests.indexOf(e);
-			interests.splice(indexToRemove, 1);
-			updateInterests(interests);
+		if (profile) {
+			const indexToRemove = profile.interests.indexOf(e);
+			profile.interests.splice(indexToRemove, 1);
+			updateProfile(profile);
 		}
 	}
 
@@ -47,7 +47,7 @@ export default function Interests() {
 	/* Adding an interest */
 	function handleAdd() {
 		try {
-			if ((interests?.length ?? 0) >= 100) {
+			if ((profile?.interests?.length ?? 0) >= 100) {
 				// Do not exceed 100 interests
 				alert(
 					"You're a very interesting person! But let's limit it to 100 interests.",
@@ -62,7 +62,7 @@ export default function Interests() {
 			}
 
 			if (
-				interests?.find(
+				profile?.interests?.find(
 					(it) => it.toLowerCase().trim() === field.toLowerCase().trim()
 				)
 			) {
@@ -83,11 +83,13 @@ export default function Interests() {
 				return;
 			}
 
-			if (interests) {
-				interests.push(field);
-				updateInterests(interests);
+			if (profile?.interests) {
+				profile.interests.push(field);
+				updateProfile(profile);
 			} else {
-				updateInterests([field]);
+				if (profile) {
+					updateProfile({ ...profile, interests: [field] });
+				}
 			}
 			setOpen(false);
 			setField('');
@@ -102,8 +104,8 @@ export default function Interests() {
 
 	let interestsDisplay: JSX.Element[] | JSX.Element;
 	// If there are any interests to display
-	if (interests?.length) {
-		interestsDisplay = interests?.map((value, index) => (
+	if (profile?.interests?.length) {
+		interestsDisplay = profile.interests?.map((value, index) => (
 			<Chip
 				sx={{ margin: '0.5em' }}
 				key={index}

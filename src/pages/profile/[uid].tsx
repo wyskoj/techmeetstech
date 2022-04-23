@@ -24,7 +24,6 @@ import { ordinal } from '../../utils/number';
 import { Edit } from '@mui/icons-material';
 import AppContext, { TMTContext } from '../../context/AppContext';
 import useSplitSecond from '../../utils/hooks/splitsecond';
-import { useInterests } from '../../utils/hooks/interest';
 import MuiAlert from '@mui/material/Alert';
 import { Profile } from '../../types/profile';
 import { useAccount } from '../../utils/hooks/account';
@@ -123,7 +122,6 @@ function initials(name: string | null): string {
 function ProfileContents(props: {
 	uid: string;
 	profile: Profile;
-	interests: string[];
 	account: Account;
 	selfProfile: boolean;
 }) {
@@ -155,6 +153,14 @@ function ProfileContents(props: {
 			<sup>{ordinal(props.profile.year)}</sup> year
 		</>
 	);
+
+	const interestsElements = props.profile.interests
+		? props.profile.interests.map((it) => <li key={it}>{it}</li>)
+		: null;
+
+	const communitiesElements = props.profile.joinedCommunities
+		? props.profile.joinedCommunities.map((it) => <li key={it}>{it}</li>)
+		: null;
 
 	return (
 		<>
@@ -229,11 +235,7 @@ function ProfileContents(props: {
 										</IconButton>
 									) : null}
 								</Box>
-								<ul>
-									{props.interests.map((it) => (
-										<li key={it}>{it}</li>
-									))}
-								</ul>
+								<ul>{interestsElements}</ul>
 							</CardContent>
 						</Card>
 					</Grid>
@@ -244,7 +246,7 @@ function ProfileContents(props: {
 						<Card>
 							<CardContent>
 								<Typography variant={'h5'}>Communities</Typography>
-								<ul />
+								<ul>{communitiesElements}</ul>
 							</CardContent>
 						</Card>
 					</Grid>
@@ -257,15 +259,13 @@ function ProfileContents(props: {
 export default function ProfilePage() {
 	useAuthenticatedRoute();
 	const router = useRouter();
+	const splitSecond = useSplitSecond();
 	const { user } = useDefaultAuthState();
 	const { uid } = router.query;
 	const { profile, loading: profileLoading } = useProfile(uid as string);
-	const { interests, loading: interestsLoading } = useInterests(uid as string);
 	const { account, loading: accountLoading } = useAccount(uid as string);
 
-	const splitSecond = useSplitSecond();
-
-	if (profileLoading || interestsLoading || accountLoading || !user) {
+	if (profileLoading || accountLoading || !user) {
 		if (splitSecond) {
 			return <Navigation />;
 		} else {
@@ -326,7 +326,6 @@ export default function ProfilePage() {
 			<ProfileContents
 				uid={uid as string}
 				profile={profile}
-				interests={interests ?? []}
 				account={account}
 				selfProfile={user.uid === uid}
 			/>
