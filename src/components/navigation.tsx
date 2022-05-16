@@ -67,8 +67,16 @@ export default function Navigation() {
 							url={'/communities'}
 						/>
 						<NavbarButton
+							text={'Events'}
+							url={'/events'}
+						/>
+						<NavbarButton
 							text={'My Interests'}
 							url={'/interests'}
+						/>
+						<NavbarButton
+							text={'My Friends'}
+							url={'/friends'}
 						/>
 					</Toolbar>
 				</Box>

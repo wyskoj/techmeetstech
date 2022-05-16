@@ -31,6 +31,10 @@ service cloud.firestore {
       allow read: if loggedIn();
       allow write: if uid == request.auth.uid; // Do not require login since they are trying to login
     }
+
+    match /communities/{cid} {
+      allow read, write, update: if loggedIn();
+    }
   }
 }
 

@@ -269,7 +269,12 @@ export default function ProfilePage() {
 		if (splitSecond) {
 			return <Navigation />;
 		} else {
-			return <ProfileSkeleton />;
+			return (
+				<>
+					<Navigation />
+					<ProfileSkeleton />
+				</>
+			);
 		}
 	}
 
